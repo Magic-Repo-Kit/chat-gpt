@@ -9,6 +9,8 @@ import ajax from '@/request';
 
 // 图片
 import botHead from '@/assets/images/bot-head.png';
+import mrkLight from '@/assets/images/logo-mrk.png';
+import mrkDark from '@/assets/images/logo-mrk-black.png';
 
 import { Drawer, Popover } from 'antd';
 
@@ -107,43 +109,9 @@ function Chat() {
     <div className={`chat-container-box ${darkMode ? 'dark-mode' : ''}`}>
       {/* 头部 */}
       <header>
-        <Popover
-          trigger="click"
-          arrow={false}
-          placement="bottomLeft"
-          content={
-            <div
-              className="chat-role-list"
-              style={{
-                background: darkMode ? '#2f2f2f' : '',
-                color: darkMode ? '#fff' : '',
-              }}
-            >
-              {roleList &&
-                roleList.map((role) => (
-                  <div key={role.id} onClick={() => handleRoleClick(role.id)}>
-                    <img src={role.imageUrl || botHead}></img>
-                    <div className="chat-role-list-name single-omit">
-                      {role.name}
-                    </div>
-                    {/* <div className="chat-role-list-checked"></div> */}
-                    {role.id === selectRole && (
-                      <div className="chat-role-list-checked"></div>
-                    )}
-                  </div>
-                ))}
-            </div>
-          }
-        >
-          <div className="font-family-dingding chat-header-role user-select">
-            面试官
-          </div>
-        </Popover>
-
-        <div onClick={onShowDrawer}>
-          <i className="iconfont mr-more-2 cursor-point"></i>
+        <div className="mrk-logo" onClick={onShowDrawer}>
+          <img src={darkMode ? mrkDark : mrkLight} className="mrkLogo" />
         </div>
-        {/* 角色下拉 */}
       </header>
       <ChatCtx
         messages={messages}
@@ -155,20 +123,16 @@ function Chat() {
         title="聊天记录"
         onClose={onCloseDrawer}
         open={drawerOpen}
-        placement="right"
+        placement="left"
       >
         <div className="chat-drawer-box">
           <ChatList
             conversationId={conversationId}
             setConversationId={setConversationId}
+            onCloseDrawer={onCloseDrawer}
           />
         </div>
       </Drawer>
-      {/* 侧边栏 */}
-      {/* <ChatList
-        conversationId={conversationId}
-        setConversationId={setConversationId}
-      /> */}
     </div>
   );
 }

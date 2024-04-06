@@ -15,15 +15,7 @@
     z-index: 1;
     position: fixed;
     top: 0;
-    background: transparent;
-    transform: translateZ(0); //触发 GPU 硬件加速
-    -webkit-transform: translateZ(0);
-    -moz-transform: translateZ(0);
-    -ms-transform: translateZ(0);
-    -o-transform: translateZ(0);
-    backface-visibility: hidden; //解决ios上内容闪动的问题
-    -webkit-backdrop-filter: blur(20px);
-    backdrop-filter: blur(20px);
+
     .header-content {
       padding: 0 25px;
       height: 65px;
@@ -31,15 +23,11 @@
       justify-content: space-between;
       align-items: center;
       .mrk-logo {
-        height: 25px;
+        height: 28px;
         display: flex;
         align-items: center;
         img {
           height: 100%;
-          &:last-child {
-            margin-left: 5px;
-            height: 70%;
-          }
         }
       }
 
@@ -63,27 +51,10 @@
     margin: 65px auto;
     .rocket-box {
       position: relative;
-      padding: 160px 0 100px 0;
+      padding: 100px 0 100px 0;
       width: 100%;
       overflow: hidden;
-      .rocket-bg {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        animation: move 50s linear infinite;
-        @keyframes move {
-          0% {
-            transform: translate(-100%, -50%);
-          }
-          50% {
-            transform: translate(100%, -50%);
-          }
-          100% {
-            transform: translate(-100%, -50%);
-          }
-        }
-      }
+
       .rocket-container {
         display: flex;
         justify-content: center;
@@ -160,14 +131,14 @@
             .explain-btn {
               font-weight: 600;
               letter-spacing: 1.8px;
-              margin-top: 40px;
+
               display: flex;
               justify-content: center;
               > div {
                 color: $bg-100;
                 cursor: pointer;
                 text-decoration: none;
-                padding: 10px 24px;
+                padding: 10px 30px;
                 border-radius: 24px;
                 border: none;
                 transition: all 80ms ease-in-out;
@@ -186,41 +157,6 @@
                   outline: 2px solid $text-300;
                   background: transparent;
                   color: $text-300;
-                }
-                &:active {
-                  transform: scale(0.95);
-                }
-              }
-              > :last-child {
-                background-color: $text-200;
-                overflow: hidden;
-                position: relative;
-                .explain-text {
-                  transform: translateY(0%);
-                  opacity: 1;
-                  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-                }
-                &:after {
-                  content: 'M-DOC';
-                  position: absolute;
-                  left: 23px;
-                  transform: translateY(50%);
-                  opacity: 0;
-                  transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-                }
-                &:hover {
-                  transform: scale(1.05);
-                  outline: 2px solid $text-300;
-                  background: transparent;
-                  color: $text-300;
-                  .explain-text {
-                    transform: translateY(-100%);
-                    opacity: 0;
-                  }
-                }
-                &:hover::after {
-                  transform: translateY(-100%);
-                  opacity: 1;
                 }
                 &:active {
                   transform: scale(0.95);
@@ -274,79 +210,6 @@
         }
       }
     }
-    .rocket-introduce {
-      display: flex;
-      flex-wrap: wrap;
-      box-sizing: border-box;
-      article {
-        width: calc(100% / 3);
-        padding: 10px;
-        box-sizing: border-box;
-        .article-container {
-          height: 120px;
-          border-radius: 20px;
-          padding: 30px;
-          border: 2px solid transparent;
-          background-color: $bg-200;
-          opacity: 0.6;
-          transition: all 0.1s;
-          &:hover {
-            opacity: 1;
-            background-color: $bg-500;
-            border-color: $text-200;
-            background-image: radial-gradient(
-              rgba($text-100, 0.2) 1px,
-              transparent 1px
-            );
-            background-position: 50% 50%;
-            background-size: 1.5rem 1.5rem;
-
-            .article-ctx {
-              opacity: 1;
-              transform: translateY(-40%);
-            }
-            .article-icon {
-              transform: translateY(-20%);
-              > i {
-                font-size: 35px;
-              }
-            }
-            .article-header {
-              transform: translateY(-40%);
-            }
-          }
-          .article-icon {
-            text-align: center;
-            padding: 10px 0 15px 0;
-            > i {
-              font-size: 50px;
-              transition: all 0.1s;
-            }
-          }
-          .article-header {
-            font-size: 18px;
-            text-align: center;
-            padding-bottom: 20px;
-            letter-spacing: 1px;
-          }
-          .article-ctx {
-            transform: translateY(0%);
-            opacity: 0;
-            transition: transform 0.2s ease, opacity 0.2s ease;
-          }
-        }
-      }
-      @media screen and (max-width: 1000px) {
-        article {
-          width: calc(100% / 2);
-        }
-      }
-      @media screen and (max-width: 768px) {
-        article {
-          width: 100%;
-        }
-      }
-    }
   }
 }
 
@@ -357,14 +220,6 @@
   background-color: $text-200;
   header {
     .header-content {
-      &:hover {
-        .mrkLogo {
-          filter: none;
-        }
-      }
-      .mrkLogo {
-        filter: grayscale(100%) brightness(200%); //白
-      }
       .btn-box {
         .space-line {
           opacity: 0.2;

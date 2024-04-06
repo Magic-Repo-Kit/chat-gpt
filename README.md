@@ -1,4 +1,4 @@
-# 百宝袋管理系统
+# chat-gpt
 
 # React + Vite + AntD + React Router v6
 
@@ -15,8 +15,6 @@ npm run dev
 npm i antd @ant-design/icons
 npm install sass @vitejs/plugin-react-refresh --save-dev
 
-npm install -D tailwindcss postcss autoprefixer
-npx tailwindcss init -p //生成配置文件
 
 react-icons
 

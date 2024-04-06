@@ -14,7 +14,7 @@ function Admin() {
 
   return (
     <div className={`admin-container ${darkMode ? 'dark-mode' : ''}`}>
-      <div className={`mr-header-box ${hideHeader ? 'isHide' : ''}`}>
+      <div className={`mr-header-box `}>
         <MrHeader />
       </div>
       <main className={hideHeader ? 'isHide' : ''}>

@@ -7,24 +7,17 @@ import WholeLoading from '@/components/whole-loading';
 import { WholeLoadingContext } from '@/components/whole-loading-provider'; //全局Loading控制
 import SwitchBtn from '@/components/switch-btn';
 import BtnLogin from '@/components/BtnLogin';
-import CubeBg from '@/components/cube-bg';
+
 import TypedText from '@/components/TypedText';
 import FormModal from './FormModal';
-import IconList from './IconList';
-import Introduce from './introduce'; //功能介绍
-// import MagicRepoKit from './magic-repo-kit';
-// import Rocket from '@/components/Rocket';
+
 // 方法
 import { platformLoginAPI } from '@/request/auth';
 import { setAccessToken, setRefreshToken } from '@/utils/tools';
 // 图片
-import mrkLogo from '@/assets/images/logo-mrk.png';
-import mrkLight from '@/assets/images/mrk-title-light.png';
-import mrkDark from '@/assets/images/mrk-title-dark.png';
-import loginMain from '@/assets/images/login-main.png';
-// import headerJS from '@/assets/images/header-js.png';
-// import loginComputer from '@/assets/images/login-computer.png';
-// import loginHeadset from '@/assets/images/login-headset.png';
+import mrkLight from '@/assets/images/logo-mrk.png';
+import mrkDark from '@/assets/images/logo-mrk-black.png';
+import loginImg from '@/assets/images/login-main-3.png';
 
 // antd组件
 import { Modal, message } from 'antd';
@@ -96,15 +89,13 @@ function Auth() {
       >
         <div className="header-content">
           <div className="mrk-logo">
-            <img src={mrkLogo} alt="" className="mrkLogo" />
-            <img src={darkMode ? mrkDark : mrkLight} className="mrkTitle" />
+            <img src={darkMode ? mrkDark : mrkLight} className="mrkLogo" />
           </div>
 
           <div className="btn-box">
             <DarkModeToggle size="20px" />
             <div className="space-line"></div>
             <div onClick={() => setIsModalVisible(true)}>
-              {/* <BtnLogin iconName="mr-login-full" content="Login" /> */}
               <BtnLogin iconName="mr-login-full" content="登录" />
             </div>
           </div>
@@ -112,96 +103,28 @@ function Auth() {
       </header>
       <main>
         <div className="rocket-box">
-          <div className="rocket-bg">
-            <CubeBg />
-          </div>
           <div className="rocket-container">
             <section>
               <div className="login-main-explain">
+                <img src={loginImg} alt="" style={{ margin: '0 auto' }} />
                 <div className="ai-title font-family-dingding">
-                  <span>百宝袋</span>
+                  <span>CHAT-1.0</span>
                   <i className="iconfont mr-icon_AI ai-icon"></i>
                 </div>
-                <div className="ai-subtitle font-family-dingding">
-                  MagicRepokit
-                </div>
-                <div className="ai-point font-family-dingding">
-                  自由
-                  <div className="space-line"></div>
-                  简单
-                  <div className="space-line"></div>
-                  高效
-                </div>
+                <div className="ai-point font-family-dingding">未来已来</div>
 
                 <div className="ai-explain">
                   <TypedText
-                    texts={[
-                      'MRK',
-                      'MagicRepokit 是一个面向 AI 的多功能工具箱。',
-                      '引入了多样化的功能，拓宽了语言模型的应用场景。',
-                      '提供了智能模型交互，实现了数据源与模型的有效融合。',
-                      '人工智能和自然语言处理领域的创新方向，',
-                      '作为一个开源项目，鼓励社区参与和共同发展。',
-                      '下一个 AI 工具百宝袋。MRK🚀',
-                    ]}
+                    texts={['AI之旅，从现在开始，走向未来，拥抱智能新时代！']}
                   />
                 </div>
-
                 <div className="explain-btn user-select">
                   <div onClick={() => setIsModalVisible(true)}>快速体验</div>
-                  <div
-                    onClick={() => {
-                      window.location.assign(
-                        'https://mrk-doc.auroralpixel.world/'
-                      );
-                      //  window.open(
-                      //    'https://mrk-doc.auroralpixel.world/',
-                      //    '_blank'
-                      //  );
-                    }}
-                  >
-                    <div className="explain-text">查看文档</div>
-                  </div>
                 </div>
-                <div>
-                  <IconList />
-                </div>
-              </div>
-            </section>
-            <section>
-              <div className="login-main">
-                <img src={loginMain} className="float-up-down" />
               </div>
             </section>
           </div>
         </div>
-        {/* 功能介绍 */}
-        <div className="rocket-introduce user-select">
-          <Introduce />
-        </div>
-        {/* <div className="login-magicrepokit">
-          <img style={{ width: '100%' }} src={headerJS} />
-        </div> */}
-        {/* <div className="login-magicrepokit">
-          <img
-            style={{ width: '300px' }}
-            src={loginComputer}
-            className="float-up-down"
-          />
-        </div>
-        <div className="login-magicrepokit">
-          <img
-            src={loginHeadset}
-            style={{ width: '300px' }}
-            className="float-up-down"
-          />
-        </div> */}
-        {/* <div>
-          <Rocket />
-        </div> */}
-        {/* <div className="login-magicrepokit">
-          <MagicRepoKit />
-        </div> */}
       </main>
 
       {/* 弹框 */}

@@ -10,9 +10,8 @@ import { createIntlObject } from '@/i18n';
 import { throttle } from 'lodash'; //lodash 节流函数
 
 // 图片
-import mrkLogo from '@/assets/images/logo-mrk.png';
-import mrkLight from '@/assets/images/mrk-title-light.png';
-import mrkDark from '@/assets/images/mrk-title-dark.png';
+import mrkLight from '@/assets/images/logo-mrk.png';
+import mrkDark from '@/assets/images/logo-mrk-black.png';
 
 import { ExclamationCircleFilled } from '@ant-design/icons';
 import { Modal } from 'antd';
@@ -32,8 +31,7 @@ const MrHeader = () => {
     <header className="mr-header-container">
       <div className="header-content">
         <div className="mrk-logo">
-          <img src={mrkLogo} alt="" className="mrkLogo" />
-          <img src={darkMode ? mrkDark : mrkLight} className="mrkTitle" />
+          {/* <img src={darkMode ? mrkDark : mrkLight} className="mrkLogo" /> */}
         </div>
         <div className="btn-box">
           <DarkModeToggle size="20px" />

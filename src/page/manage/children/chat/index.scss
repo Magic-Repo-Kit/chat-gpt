@@ -10,7 +10,7 @@
   @media screen and (max-width: 768px) {
     padding: 10px;
     padding-top: 0;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 50px);
   }
   // 头部
   > header {
@@ -26,6 +26,22 @@
       padding: 5px 10px;
       border-radius: 3px;
       background-color: $bg-200;
+    }
+    .mrk-logo {
+      height: 24px;
+      display: flex;
+      align-items: center;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      img {
+        height: 100%;
+      }
+      .mrkTitle {
+        margin-left: 5px;
+        height: 70%;
+      }
     }
   }
 }

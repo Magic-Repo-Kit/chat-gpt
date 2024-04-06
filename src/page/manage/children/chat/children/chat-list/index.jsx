@@ -6,7 +6,7 @@ import ajax from '@/request';
 import { Button } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
-function ChatList({ conversationId, setConversationId }) {
+function ChatList({ conversationId, setConversationId, onCloseDrawer }) {
   const [isNavHidden, setIsNavHidden] = useState(false);
   const [titleList, setTitleList] = useState([]);
 
@@ -40,6 +40,7 @@ function ChatList({ conversationId, setConversationId }) {
     if (conversationId === id) return;
     setConversationId(id);
     getTitleList();
+    onCloseDrawer();
   };
   // 新增会话
   const handleAddNewChat = () => {
@@ -58,6 +59,7 @@ function ChatList({ conversationId, setConversationId }) {
 
     // 将当前激活的会话ID设置为空，表示新会话是当前选中的会话
     setConversationId('');
+    onCloseDrawer();
   };
 
   useEffect(() => {
