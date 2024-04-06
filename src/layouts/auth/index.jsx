@@ -106,7 +106,7 @@ function Auth() {
           <div className="rocket-container">
             <section>
               <div className="login-main-explain">
-                <img src={loginImg} alt="" style={{ margin: '0 auto' }} />
+                <img className="logo-img" src={loginImg} alt="" />
                 <div className="ai-title font-family-dingding">
                   <span>CHAT-1.0</span>
                   <i className="iconfont mr-icon_AI ai-icon"></i>
