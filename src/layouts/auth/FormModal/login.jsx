@@ -36,7 +36,7 @@ function Login() {
   const filterInput = (e, setValue, setShowTips) => {
     const inputValue = e.target.value;
     const filteredValue = inputValue.replace(/[^a-zA-Z0-9_\-.@]/g, '');
-    const maxLengthValue = filteredValue.match(/^.{0,12}/)[0]; // 最多匹配前12个字符
+    const maxLengthValue = filteredValue.match(/^.{0,30}/)[0]; // 最多匹配前12个字符
     setValue(maxLengthValue);
     if (filteredValue !== inputValue) {
       setShowTips(true); // 显示提示信息
@@ -118,15 +118,15 @@ function Login() {
   return (
     <div className="login-container">
       <div className="form-box user-select">
-        {/* 账号 */}
+        {/* 邮箱 */}
         <div className="input-title">
-          账号：
-          {username.length < 25 ? (
+          邮箱：
+          {username.length < 30 ? (
             showUsernameTips && (
               <span className="title-tips">请输入数字、字母或 _ - . @</span>
             )
           ) : (
-            <span className="title-tips">最大长度不能超过25</span>
+            <span className="title-tips">最大长度不能超过30</span>
           )}
         </div>
         <div className="input-content">
@@ -143,12 +143,12 @@ function Login() {
         {/* 密码 */}
         <div className="input-title">
           密码：
-          {password.length < 25 ? (
+          {password.length < 30 ? (
             showPasswordTips && (
               <span className="title-tips">请输入数字、字母或 _ - . @</span>
             )
           ) : (
-            <span className="title-tips">最大长度不能超过25</span>
+            <span className="title-tips">最大长度不能超过30</span>
           )}
         </div>
         <div className="input-content">

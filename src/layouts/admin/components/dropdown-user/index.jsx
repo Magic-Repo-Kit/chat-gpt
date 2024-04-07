@@ -61,7 +61,7 @@ function DropdownUser({ setUserOpen }) {
   const filterInput = (e, setValue, setShowTips) => {
     const inputValue = e.target.value;
     const filteredValue = inputValue.replace(/[^a-zA-Z0-9_\-.@]/g, '');
-    const maxLengthValue = filteredValue.match(/^.{0,12}/)[0]; // 最多匹配前12个字符
+    const maxLengthValue = filteredValue.match(/^.{0,30}/)[0]; // 最多匹配前30个字符
     setValue(maxLengthValue);
     if (filteredValue !== inputValue) {
       setShowTips(true); // 显示提示信息
@@ -199,12 +199,12 @@ function DropdownUser({ setUserOpen }) {
             </div>
             {/* 
             <span className="tips">
-              {password.length < 25 ? (
+              {password.length < 30 ? (
                 showPasswordTips && (
                   <span className="title-tips">请输入数字、字母或 _ - . @</span>
                 )
               ) : (
-                <span className="title-tips">最大长度不能超过25</span>
+                <span className="title-tips">最大长度不能超过30</span>
               )}
             </span> */}
           </div>

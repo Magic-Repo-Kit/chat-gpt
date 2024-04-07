@@ -12,7 +12,7 @@ import github from '@/assets/images/github.png';
 import gitee from '@/assets/images/gitee.png';
 
 // antd组件
-import { message } from 'antd';
+import { message, Button } from 'antd';
 
 // 上下文
 import { IsRegisterContext } from '../index';
@@ -20,25 +20,32 @@ import { IsRegisterContext } from '../index';
 function Register() {
   // 上下文
   const { isRegister, setIsRegister } = useContext(IsRegisterContext);
-
+  // 路由
+  const navigate = useNavigate();
   // 共享参数
   const { setIsLoading } = useContext(WholeLoadingContext);
   // 参数
   const [showPassword, setShowPassword] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPwd, setRepeatPwd] = useState('');
-  const [showUsernameTips, setShowUsernameTips] = useState(false);
-  const [showPasswordTips, setShowPasswordTips] = useState(false);
-  const [showRepeatPwdTips, setShowRepeatPwdTips] = useState(false);
+  const [vCodeLoading, setVCodeLoading] = useState(false); //验证码加载状态
+  const [countdown, setCountdown] = useState(0);
 
-  const navigate = useNavigate();
+  const [account, setAccount] = useState(''); // 账号
+  const [email, setEmail] = useState(''); //邮箱
+  const [verificationCode, setVerificationCode] = useState(''); //验证码
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [showEmailTips, setShowEmailTips] = useState(false);
+  const [showVerificationCodeTips, setShowVerificationCodeTips] =
+    useState(false);
+  const [showPasswordTips, setShowPasswordTips] = useState(false);
+  const [showConfirmPwdTips, setShowConfirmPwdTips] = useState(false);
 
   // 过滤输入 | 控制显示消息
   const filterInput = (e, setValue, setShowTips) => {
     const inputValue = e.target.value;
     const filteredValue = inputValue.replace(/[^a-zA-Z0-9_\-.@]/g, '');
-    const maxLengthValue = filteredValue.match(/^.{0,12}/)[0]; // 最多匹配前12个字符
+    const maxLengthValue = filteredValue.match(/^.{0,30}/)[0]; // 最多匹配前30个字符
     setValue(maxLengthValue);
     if (filteredValue !== inputValue) {
       setShowTips(true); // 显示提示信息
@@ -46,31 +53,73 @@ function Register() {
       setShowTips(false); // 隐藏提示信息
     }
   };
+  // 校验邮箱格式
+  const checkEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+  // 发送验证码
+  const sendCode = async () => {
+    if (countdown > 0) {
+      return;
+    }
+    if (!email) {
+      message.warning('请输入邮箱');
+      return;
+    }
+    if (!checkEmail(email)) {
+      message.warning('请输入正确的邮箱');
+      return;
+    }
+    setVCodeLoading(true);
+
+    setTimeout(() => {
+      setCountdown(60);
+      setVCodeLoading(false);
+    }, 6000);
+  };
 
   // 注册账号
   const handleRegister = throttle(async (e) => {
     e.preventDefault();
     // 校验
-    if (!username) {
-      message.warning('请输入注册账号');
+    if (!email) {
+      message.warning('请输入邮箱');
+      return;
+    }
+    if (!checkEmail(email)) {
+      message.warning('请输入正确的邮箱');
+      return;
+    }
+    if (!verificationCode) {
+      message.warning('请输入验证码');
       return;
     }
     if (!password) {
       message.warning('请输入密码');
       return;
     }
-    if (!repeatPwd) {
+    if (!confirmPassword) {
       message.warning('请再次输入密码');
       return;
     }
-    if (password !== repeatPwd) {
+    if (password !== confirmPassword) {
       message.warning('两次输入的密码不一致');
       return;
     }
     setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      message.success('注册成功，去登录试试');
+      setIsRegister(!isRegister);
+    }, 3000);
+    // 邮箱格式校验
+    // 邮箱已存在，立即登陆
+    // 验证码
+
     // 添加注册处理函数
     // try {
-    //   const res = await loginAPI({ username, password });
+    //   const res = await loginAPI({ account, password });
     //   if (res.code === 200) {
     //     const { access_token, refresh_token } = res.data;
     //     setAccessToken(access_token);
@@ -88,66 +137,87 @@ function Register() {
     // }
   }, 1000);
 
-  // 第三方平台登录
-  const platformLogin = throttle(async (platformName) => {
-    setIsLoading(true);
-    // 10-github 20-google 30-gitee
-    const type =
-      platformName === 'github' ? 10 : platformName === 'google' ? 20 : 30;
-    localStorage.setItem('platformType', type);
-    const redirectUri = window.location.href;
-    // const redirectUri = 'https://mrk.auroralpixel.world/auth';
+  useEffect(() => {
+    let timer = null;
 
-    // 获取第三方授权地址
-    try {
-      const res = await getPlatformAuth({ type, redirectUri });
-      if (res.code === 200) {
-        // 跳转到第三方平台授权页面
-        window.location.href = res.data;
-      } else {
-        message.error(res.msg || '获取授权失败');
-      }
-    } catch (error) {
-      message.error(error.msg || '获取授权失败');
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
+    if (countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
     }
-  }, 1000);
 
+    return () => {
+      clearInterval(timer);
+    };
+  }, [countdown]);
   return (
     <div className="login-container">
       <div className="form-box user-select">
-        {/* 账号 */}
+        {/* 邮箱 */}
         <div className="input-title">
-          请输入注册账号：
-          {username.length < 25 ? (
-            showUsernameTips && (
+          邮箱：
+          {email.length < 30 ? (
+            showEmailTips && (
               <span className="title-tips">请输入数字、字母或 _ - . @</span>
             )
           ) : (
-            <span className="title-tips">最大长度不能超过25</span>
+            <span className="title-tips">最大长度不能超过30</span>
           )}
         </div>
         <div className="input-content">
-          <i className="iconfont mr-danren"></i>
+          <i className="iconfont mr-youjianyouxiang"></i>
           <input
             type="text"
             className="input-text"
-            defaultValue={username}
-            onBlur={(e) => filterInput(e, setUsername, setShowUsernameTips)}
+            placeholder="请输入邮箱"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            onBlur={(e) => filterInput(e, setEmail, setShowEmailTips)}
           />
+        </div>
+        {/* 验证码 */}
+        <div className="input-title">
+          验证码：
+          {verificationCode.length < 30 ? (
+            showVerificationCodeTips && (
+              <span className="title-tips">请输入数字、字母或 _ - . @</span>
+            )
+          ) : (
+            <span className="title-tips">最大长度不能超过30</span>
+          )}
+        </div>
+        <div className="input-content">
+          <i className="iconfont mr-yanzhengma1"></i>
+          <input
+            type="text"
+            className="input-text"
+            placeholder="请输入验证码"
+            value={verificationCode}
+            onChange={(e) => setVerificationCode(e.target.value)}
+            onBlur={(e) =>
+              filterInput(e, setVerificationCode, setShowVerificationCodeTips)
+            }
+          />
+          <div className="send-btn">
+            <Button
+              type="primary"
+              // disabled={vCodeLoading || countdown > 0}
+              loading={vCodeLoading}
+              onClick={sendCode}
+            >
+              {countdown > 0 ? `${countdown}s` : '发送'}
+            </Button>
+          </div>
         </div>
         {/* 密码 */}
         <div className="input-title">
-          请输入注册密码：
-          {password.length < 25 ? (
+          密码：
+          {password.length < 30 ? (
             showPasswordTips && (
               <span className="title-tips">请输入数字、字母或 _ - . @</span>
             )
           ) : (
-            <span className="title-tips">最大长度不能超过25</span>
+            <span className="title-tips">最大长度不能超过30</span>
           )}
         </div>
         <div className="input-content">
@@ -157,7 +227,9 @@ function Register() {
           <input
             type={showPassword ? 'text' : 'password'}
             className="input-text"
-            defaultValue={password}
+            placeholder="请输入密码"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             onBlur={(e) => filterInput(e, setPassword, setShowPasswordTips)}
           />
           <div
@@ -169,15 +241,15 @@ function Register() {
             <div className={`icon-line ${!showPassword ? 'line-w' : ''}`}></div>
           </div>
         </div>
-        {/* 二次确认 */}
+        {/* 确认密码 */}
         <div className="input-title">
-          请再次输入密码：
-          {repeatPwd.length < 25 ? (
-            showRepeatPwdTips && (
+          确认密码：
+          {confirmPassword.length < 30 ? (
+            showConfirmPwdTips && (
               <span className="title-tips">请输入数字、字母或 _ - . @</span>
             )
           ) : (
-            <span className="title-tips">最大长度不能超过25</span>
+            <span className="title-tips">最大长度不能超过30</span>
           )}
         </div>
         <div className="input-content">
@@ -187,8 +259,12 @@ function Register() {
           <input
             type={showPassword ? 'text' : 'password'}
             className="input-text"
-            defaultValue={repeatPwd}
-            onBlur={(e) => filterInput(e, setRepeatPwd, setShowRepeatPwdTips)}
+            placeholder="请确认密码"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            onBlur={(e) =>
+              filterInput(e, setConfirmPassword, setShowConfirmPwdTips)
+            }
           />
           <div
             className="icon-eyes-box"
@@ -206,28 +282,6 @@ function Register() {
 
         {/* 第三方平台登录 */}
         <div className="form-login-or font-family-dingding">OR</div>
-        <div className="fast-box">
-          <button
-            className="fast-btn github"
-            onClick={() => platformLogin('github')}
-          >
-            <img src={github} />
-            Github登录
-          </button>
-          <button
-            className="fast-btn gitee"
-            onClick={() => platformLogin('gitee')}
-          >
-            <img src={gitee} />
-            Gitee登录
-          </button>
-          <button
-            className="fast-btn google"
-            onClick={() => platformLogin('google')}
-          >
-            <img src={google} />
-          </button>
-        </div>
         <p className="register">
           已有账户?{' '}
           <span className="link" onClick={() => setIsRegister(!isRegister)}>

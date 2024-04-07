@@ -40,7 +40,6 @@
         &:focus-within {
           border: 1.5px solid $accent-700;
         }
-
         i {
           font-size: 22px;
           &.icon-eyes {
@@ -65,6 +64,9 @@
           .icon-line.line-w {
             transform: rotate(-45deg) translateX(0);
           }
+        }
+        .send-btn {
+          margin-left: 5px;
         }
 
         .input-text {
